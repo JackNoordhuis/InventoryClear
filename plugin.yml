@@ -1,0 +1,6 @@
+name: InventoryClear
+author: JackNoordhuis
+description: Allows you to view and manage players inventories with ease.
+version: 0.0.9
+main: jacknoordhuis\inventoryclear\InventoryClear
+api: [3.0.0-ALPHA12]
