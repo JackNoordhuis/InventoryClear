@@ -1,9 +1,9 @@
 ###  InventoryClear v0.0.1 configuration file  ###
 general:
   events:
-    # Clear players inventories when they join?
-    join-clear: true
-    # Clear players inventories on death?
+    # Clear players inventories when they join? (normal, armor, all)
+    join-clear: all
+    # Clear players inventories on death? (normal, armor, all)
     death-clear: false
-    # Clear players inventories when they leave?
-    leave-clear: true
+    # Clear players inventories when they leave? (normal, armor, all)
+    leave-clear: all

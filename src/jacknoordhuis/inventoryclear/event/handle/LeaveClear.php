@@ -1,7 +1,7 @@
 <?php
 
 /**
- * JoinClear.php – InventoryClear
+ * LeaveClear.php – InventoryClear
  *
  * Copyright (C) 2018 Jack Noordhuis
  *
@@ -21,9 +21,9 @@ namespace jacknoordhuis\inventoryclear\event\handle;
 use jacknoordhuis\inventoryclear\event\EventHandler;
 use jacknoordhuis\inventoryclear\event\EventManager;
 use jacknoordhuis\inventoryclear\util\InvUtils;
-use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerQuitEvent;
 
-class JoinClear extends EventHandler {
+class LeaveClear extends EventHandler {
 
 	/** @var int */
 	private $invType;
@@ -34,14 +34,16 @@ class JoinClear extends EventHandler {
 		$this->invType = $invType;
 	}
 
-	public function handles(): array {
+	public function handles() : array {
 		return [
-			PlayerJoinEvent::class => "handleJoin"
+			PlayerQuitEvent::class => "handleQuit"
 		];
 	}
 
-	public function handleJoin(PlayerJoinEvent $event) : void {
+	public function handleQuit(PlayerQuitEvent $event) : void {
 		InvUtils::clearFromType($event->getPlayer(), $this->invType);
+
+		$event->getPlayer()->save(true); // make sure the inventory changes are saved
 	}
 
 }

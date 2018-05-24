@@ -1,7 +1,7 @@
 <?php
 
 /**
- * JoinClear.php – InventoryClear
+ * DeathClear.php – InventoryClear
  *
  * Copyright (C) 2018 Jack Noordhuis
  *
@@ -21,9 +21,10 @@ namespace jacknoordhuis\inventoryclear\event\handle;
 use jacknoordhuis\inventoryclear\event\EventHandler;
 use jacknoordhuis\inventoryclear\event\EventManager;
 use jacknoordhuis\inventoryclear\util\InvUtils;
-use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\Player;
 
-class JoinClear extends EventHandler {
+class DeathClear extends EventHandler {
 
 	/** @var int */
 	private $invType;
@@ -34,14 +35,19 @@ class JoinClear extends EventHandler {
 		$this->invType = $invType;
 	}
 
-	public function handles(): array {
+	public function handles() : array {
 		return [
-			PlayerJoinEvent::class => "handleJoin"
+			EntityDamageEvent::class => "handleDamage"
 		];
 	}
 
-	public function handleJoin(PlayerJoinEvent $event) : void {
-		InvUtils::clearFromType($event->getPlayer(), $this->invType);
+	public function handleDamage(EntityDamageEvent $event) {
+		if(($p = $event->getEntity()) instanceof Player) {
+			/** @var $p Player */
+			if($event->getFinalDamage() >= $p->getHealth()) {
+				InvUtils::clearFromType($p, $this->invType);
+			}
+		}
 	}
 
 }
